@@ -1,0 +1,16 @@
+*.DS_Store
+
+# IDEA
+*.idea/
+
+# dependencies
+*node_modules/
+
+# README
+*README.pdf
+
+# week 1 modules
+inclass-examples.zip
+/inclass-examples
+lab1.zip
+Week 1 - HTML, CSS, JavaScript Review.pptx

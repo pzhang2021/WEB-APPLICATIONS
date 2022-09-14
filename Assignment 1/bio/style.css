@@ -1,0 +1,266 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:500");
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+  background: #4a92bd;
+  font: 14px/20px "Montserrat", Arial, sans-serif;
+  padding: 40px 0;
+  color: white;
+}
+
+.container {
+  margin: 0 auto;
+  width: 40%;
+}
+
+.chat {
+  width: 100%;
+  float: left;
+  background: #f2f5f8;
+  color: #434651;
+  border-radius: 5px;
+  box-shadow: #11151a 0 0 10px;
+}
+
+.chat .chat-header {
+  height: 20%;
+  padding: 20px;
+  border-bottom: 2px solid rgb(255, 255, 255);
+}
+
+.chat .chat-header img {
+  float: left;
+  z-index: 1;
+  border-radius: 40px;
+  height: 70px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 3px solid rgb(46 161 26 / 75%);
+}
+
+.chat .chat-header .chat-about {
+  float: left;
+  padding-left: 10px;
+  margin-top: 6px;
+}
+.chat .chat-header .chat-with {
+  font-weight: bold;
+  font-size: 16px;
+}
+.chat .chat-header .chat-status {
+  color: #92959e;
+}
+.fa-question-circle {
+  float: right;
+  color: #d8dadf;
+  font-size: 20px;
+  margin-top: 12px;
+}
+
+.hint-ul {
+    list-style-type: disc;
+}
+
+.list-group-mine .list-group-item {
+    background-color: #f2f5f8;
+}
+
+.chat .chat-history {
+  padding: 30px 20px 0px 0px;
+  border-bottom: 2px solid white;
+  overflow-y: scroll;
+  height: 560px;
+}
+.chat .chat-history .message-data {
+  margin-bottom: 15px;
+}
+.chat .chat-history .message-data-time {
+  color: #a8aab1;
+  padding-left: 6px;
+}
+.chat .chat-history .message {
+  color: white;
+  padding: 18px 20px;
+  line-height: 26px;
+  font-size: 16px;
+  margin-bottom: 30px;
+  width: 90%;
+  position: relative;
+}
+.chat .chat-history .my-message {
+  border-radius: 1.4rem;
+  border-top-left-radius: 0.3rem;
+  background: #afe19d;
+}
+.chat .chat-history .other-message {
+  text-align: right;
+  border-radius: 1.4rem;
+  border-top-right-radius: 0.3rem;
+  background: #94c2ed;
+}
+.chat .chat-message {
+  height: 10%;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+.chat .chat-message .message-to-send {
+  box-sizing: border-box;
+  vertical-align: top;
+  padding: 0 30px;
+  font-size: 18px;
+  width: 75%;
+  height: 50px;
+  border: 1px solid white;
+  border-radius: 20px 0 0 20px;
+  outline: 2px solid white;
+}
+.chat .chat-message .message-to-send:focus {
+  outline: 2px solid #75b1e8;
+}
+.chat .chat-message .message-to-send:focus ~ .input-button {
+  background: #75b1e8;
+  outline: 2px solid #75b1e8;
+}
+.chat .chat-message .input-button {
+  cursor: pointer;
+  border: none;
+  background: white;
+  background-size: 35px 35px;
+  border-radius: 0 20px 20px 0;
+  padding: 15px 25px;
+  text-align: center;
+  width: 20%;
+  height: 50px;
+  font-size: 1rem;
+  color: white;
+  outline: 2px solid white;
+}
+
+.online,
+.offline,
+.me {
+  margin-right: 3px;
+  font-size: 10px;
+}
+
+.online {
+  color: #afe19d;
+}
+
+.offline {
+  color: #e38968;
+}
+
+.me {
+  color: #94c2ed;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.float-right {
+  float: right;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+/*tooltip */
+.tooltip-mine {
+  z-index: 1;
+  display: none;
+  padding: 10px 20px;
+  background: #333;
+  color: white;
+  position: absolute;
+  border-radius: 9px;
+  font-size: 100%;
+  text-align: center;
+  box-shadow: 0 0 3px rgba(56, 54, 54, 0.86);
+}
+
+.con-tooltip:hover .tooltip-mine {
+  display: block;
+  opacity: 0.8;
+}
+
+/*hover ToolTip*/
+.right:hover {
+  transform: translateX(0px);
+}
+
+/*right*/
+.tooltip-mine {
+  top: -20%;
+  left: 110%;
+}
+
+/* loading */
+.load-wrap {
+  padding: 18px 18px;
+  border-radius: 7px;
+  margin-bottom: 30px;
+  width: 20%;
+  position: relative;
+  background: #f2f5f8;
+}
+.loader {
+  text-align: center;
+}
+.load-wrap div {
+  float: left;
+}
+.loader span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #afe19d;
+  border-radius: 20px;
+  animation: loader 0.45s infinite alternate;
+}
+.loader span:nth-of-type(2) {
+  animation-delay: 0.15s;
+}
+.loader span:nth-of-type(3) {
+  animation-delay: 0.3s;
+}
+@keyframes loader {
+  0% {
+    opacity: 0.1;
+    transform: scale(0.2);
+  }
+  25% {
+    opacity: 0.3;
+    transform: scale(0.4);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.6);
+  }
+  75% {
+    opacity: 0.7;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+}

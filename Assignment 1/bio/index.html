@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Pengju's Bio Chat Room</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- partial:index.partial.html -->
+    <div class="container clearfix">
+      <div class="chat row">
+        <div class="chat-header clearfix row-md-3">
+            <div class="chat-avatar">          
+                <img
+                src="https://static.vecteezy.com/system/resources/previews/004/842/418/original/hipster-owl-avatar-vector.jpg"
+                alt="avatar"/>
+            </div>
+          <div class="chat-about">
+            <div class="chat-with">Chat with Pengju Zhang</div>
+            <div class="chat-status">Online</div>
+          </div>
+          <div class="con-tooltip right">
+            <i class="fa fa-question-circle"></i>
+            <div class="tooltip-mine">
+              <p style="font: 16px/22px 'Montserrat', Arial, sans-serif">
+                Keywords:
+              </p>
+              <ul class="hint-ul">
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- end chat-header -->
+
+        <div class="chat-history row-lg-5">
+          <ul class="list-group-mine"></ul>
+        </div>
+
+        <!-- end chat-history -->
+        <div class="chat-message clearfix row-md-5">
+          <input
+            class="message-to-send"
+            name="message-to-send"
+            id="message-to-send"
+            placeholder="Type your message"
+            ></input>
+          <input class="input-button" id="input-button" type="button" value = 'SEND'></input>
+        </div>
+        <!-- end chat-message -->
+      </div>
+      <!-- end chat -->
+    </div>
+    <!-- end container -->
+
+    <script id="message-template" type="text/x-handlebars-template">
+      <li class="clearfix list-group-item border-0">
+        <div class="message-data align-right">
+          <span class="message-data-time">{{time}}, Today</span>
+          &nbsp; &nbsp;
+          <span class="message-data-name">Anonymous</span>
+          <i class="fa fa-circle me"></i>
+        </div>
+        <div class="message other-message float-right">
+          {{messageOutput}}
+        </div>
+      </li>
+    </script>
+
+    <script id="message-response-template" type="text/x-handlebars-template">
+      <li class="clearfix list-group-item border-0">
+        <div class="message-data">
+          <span class="message-data-name"><i class="fa fa-circle online"></i>
+            Pengju</span>
+          <span class="message-data-time">{{time}}, Today</span>
+        </div>
+        <div class="message my-message">
+          {{response}}
+        </div>
+      </li>
+    </script>
+
+    <script id="message-loading-template" type="text/x-handlebars-template">
+      <li id="loading-li">
+        <div class="message-data">
+          <span class="message-data-name"><i class="fa fa-circle online"></i>
+            Pengju</span>
+        </div>
+        <div class="load-wrap">
+          <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </li>
+    </script>
+
+    <script id="hint-template" type="text/x-handlebars-template">
+      <li id="hint-li">{{hint}}</li>
+    </script>
+
+
+    <!-- partial -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
