@@ -6,11 +6,10 @@
 # dependencies
 *node_modules/
 
-# README
+# lab instruction
 *README.pdf
+*lab2.pdf
 
-# week 1 modules
-inclass-examples.zip
-/inclass-examples
-lab1.zip
-Week 1 - HTML, CSS, JavaScript Review.pptx
+# lectures
+/l1
+/l2
