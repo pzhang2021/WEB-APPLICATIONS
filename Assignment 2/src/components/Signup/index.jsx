@@ -2,37 +2,38 @@ import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import './index.scss'
-// import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function Signup() {
   const usernameRef = useRef(null)
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const passwordConfirmRef = useRef(null)
-  // const { createUser } = useAuth()
-  const [error, setError] = useState('')
+  const { createUser } = useAuth()
+  const [error, setError] = useState(false)
+  const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
-  // async function handleSubmit(e) {
-  //   e.preventDefault()
-
-  //   if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-  //     return setError('Passwords do not match')
-  //   }
-
-  //   try {
-  //     setError('')
-  //     setLoading(true)
-  //     await createUser(emailRef.current.value, passwordRef.current.value)
-  //   } catch {
-  //     setError('Email already exist')
-  //   }
-  //   setLoading(false)
-  // }
-
-  function handleThirdPartyLogin(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    setError('Work in progress')
+    setMessage('')
+    setError(false)
+
+    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+      setError(true)
+      setMessage('Passwords do not match')
+      return
+    }
+
+    try {
+      setLoading(true)
+      await createUser(emailRef.current.value, passwordRef.current.value)
+      setMessage('Create successfully, please ')
+    } catch {
+      setError(true)
+      setMessage('Email already exist')
+    }
+    setLoading(false)
   }
 
   return (
@@ -40,8 +41,13 @@ export default function Signup() {
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Form>
+          {error && <Alert variant="danger">{message}</Alert>}
+          {!error && message && (
+            <Alert variant="success">
+              {message} <Link to="/login">login</Link>
+            </Alert>
+          )}
+          <Form onSubmit={handleSubmit}>
             <Form.Group id="email" className="m-2">
               <Form.Label>Username</Form.Label>
               <Form.Control

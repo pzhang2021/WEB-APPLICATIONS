@@ -31,17 +31,13 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        setCurrentUser(authUser)
-        setLoading(false)
-        // ...
-      } else {
-        // User is signed out
-        // ...
-        console.log('user logout')
-      }
+      // if (authUser) {
+      //   console.log('user sign in')
+      // } else {
+      //   console.log('user sign out')
+      // }
+      setCurrentUser(authUser)
+      setLoading(false)
     })
     return unsubscribe
   }, [])

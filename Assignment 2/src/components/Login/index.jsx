@@ -12,29 +12,31 @@ import './index.scss'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function Login() {
-  const usernameRef = useRef(null)
+  const [username, setUsername] = useState('')
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
-  // const { login } = useAuth()
+  const { login } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  // async function handleSubmit(e) {
-  //   e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
-  //   try {
-  //     setError('')
-  //     setLoading(true)
-  //     await login(emailRef.current.value, passwordRef.current.value)
-  //     navigate('/', { replace: true })
-  //   } catch {
-  //     setError('Email or password is incorrect')
-  //   }
-  //   setLoading(false)
-  // }
+    console.log(username)
 
-  function handleThirdPartyLogin(e) {
+    try {
+      setError('')
+      setLoading(true)
+      await login(emailRef.current.value, passwordRef.current.value)
+      navigate('/', { replace: true, state: { currentUserIs: username } })
+    } catch {
+      setError('Email or password is incorrect')
+    }
+    setLoading(false)
+  }
+
+  const handleThirdPartyLogin = (e) => {
     e.preventDefault()
     setError('Work in progress')
   }
@@ -45,12 +47,15 @@ export default function Login() {
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
-          <Form>
-            <Form.Group id="email" className="m-2">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group
+              id="email"
+              className="m-2"
+              onChange={(e) => setUsername(e.target.value)}
+            >
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="username"
-                ref={usernameRef}
                 placeholder="Pengju"
                 required
               ></Form.Control>
@@ -88,7 +93,7 @@ export default function Login() {
         Need an account? &nbsp;
         <Link to="/signup">Sign up</Link>
       </div>
-      <div class="line"></div>
+      <div className="line"></div>
       <div className="text-center m-2">
         <ButtonGroup onClick={handleThirdPartyLogin}>
           <Button
