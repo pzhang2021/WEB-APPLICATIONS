@@ -14,7 +14,7 @@ export default function Signup() {
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setMessage('')
     setError(false)
@@ -28,7 +28,7 @@ export default function Signup() {
     try {
       setLoading(true)
       await createUser(emailRef.current.value, passwordRef.current.value)
-      setMessage('Create successfully, please ')
+      setMessage('Create account successfully, please ')
     } catch {
       setError(true)
       setMessage('Email already exist')
@@ -48,7 +48,7 @@ export default function Signup() {
             </Alert>
           )}
           <Form onSubmit={handleSubmit}>
-            <Form.Group id="email" className="m-2">
+            <Form.Group controlId="username" className="m-2">
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="username"
@@ -57,7 +57,7 @@ export default function Signup() {
                 required
               ></Form.Control>
             </Form.Group>
-            <Form.Group id="email" className="m-2">
+            <Form.Group controlId="email" className="m-2">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
@@ -66,7 +66,7 @@ export default function Signup() {
                 required
               ></Form.Control>
             </Form.Group>
-            <Form.Group id="password" className="m-2">
+            <Form.Group controlId="password" className="m-2">
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"

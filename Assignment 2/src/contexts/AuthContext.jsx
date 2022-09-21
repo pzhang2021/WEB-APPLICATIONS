@@ -17,15 +17,15 @@ export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  function createUser(email, password) {
+  const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password)
   }
 
-  function login(email, password) {
+  const login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password)
   }
 
-  function logout() {
+  const logout = () => {
     signOut(auth)
   }
 
