@@ -14,7 +14,7 @@ export default function TodoProvider({ children }) {
       description: 'eggs, pork meat, onion, strawberry',
       isDone: false,
       time: ['Thu', 18, 32],
-      author: 'Inupedia',
+      author: 'Mom',
       isUrgent: false,
     },
   ]

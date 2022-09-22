@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate, useLocation } from 'react-router-dom'
 import {
   Form,
   ButtonGroup,
@@ -35,7 +35,9 @@ export default function Login() {
       setError('')
       setLoading(true)
       await login(emailRef.current.value, passwordRef.current.value)
-      navigate('/', { replace: true, state: { currentUserIs: username } })
+      sessionStorage.setItem('username', username)
+      console.log(sessionStorage.getItem('username'))
+      navigate('/', { replace: true })
     } catch {
       setError('Email or password is incorrect')
     }

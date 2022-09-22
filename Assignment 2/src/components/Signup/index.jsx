@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link, useLocation, useNavigate, Navigate } from 'react-router-dom'
+import { Link, useLocation, Navigate } from 'react-router-dom'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 
@@ -13,7 +13,6 @@ export default function Signup() {
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const location = useLocation()
-  const navigate = useNavigate()
 
   if (currentUser) {
     return <Navigate to="/" state={{ from: location }} replace />
@@ -33,10 +32,7 @@ export default function Signup() {
     try {
       setLoading(true)
       await createUser(emailRef.current.value, passwordRef.current.value)
-      navigate('/', {
-        replace: true,
-        state: { currentUserIs: usernameRef.current.value },
-      })
+      setMessage('Your account has been created successfully. You can now ')
     } catch {
       setError(true)
       setMessage('Email already exist')

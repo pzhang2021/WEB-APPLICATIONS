@@ -9,6 +9,7 @@ export default function Footer() {
   const handleLogout = async () => {
     try {
       await logout()
+      sessionStorage.clear()
       navigate('/login')
     } catch (e) {
       console.log(e.message)
