@@ -50,16 +50,16 @@ Clone the repo
 ### Setup 
 
 ```sh
-cd src/
+cd src/config
 touch firebase.config.js
-# paste it into your .env.local file, remember to replace it with your firebase setting
+# paste it into your firebase.config.js, remember to fill out it with your firebase setting
 # export const firebaseConfig = {
-#   apiKey: '',
-#   authDomain: '',
-#   projectId: '',
-#   storageBucket: '',
-#   messagingSenderId: '',
-#   appId: '',
+#   apiKey: 'replace it with your apiKey',
+#   authDomain: 'replace it with your authDomain',
+#   projectId: 'replace it with your projectId',
+#   storageBucket: 'replace it with your storageBucket',
+#   messagingSenderId: 'replace it with your messagingSenderId',
+#   appId: 'replace it with your appId',
 # }
 ```
 
