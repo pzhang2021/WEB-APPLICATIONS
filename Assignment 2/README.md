@@ -50,14 +50,17 @@ Clone the repo
 ### Setup 
 
 ```sh
-touch .env.local
-# paste it into your .env.local file, remember to replace it with your firebase & mongodb setting
-#  REACT_APP_FIREBASE_API_KEY=
-#  REACT_APP_FIREBASE_AUTH_DOMAIN=
-#  REACT_APP_FIREBASE_PROJECT_ID=
-#  REACT_APP_FIREBASE_STORAGE_BUCKET=
-#  REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
-#  REACT_APP_FIREBASE_APP_ID=
+cd src/
+touch firebase.config.js
+# paste it into your .env.local file, remember to replace it with your firebase setting
+# export const firebaseConfig = {
+#   apiKey: '',
+#   authDomain: '',
+#   projectId: '',
+#   storageBucket: '',
+#   messagingSenderId: '',
+#   appId: '',
+# }
 ```
 
 ### Use

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, Navigate } from 'react-router-dom'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
-import './index.scss'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function Signup() {
@@ -9,10 +8,15 @@ export default function Signup() {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const passwordConfirmRef = useRef(null)
-  const { createUser } = useAuth()
+  const { currentUser, createUser } = useAuth()
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const location = useLocation()
+
+  if (currentUser) {
+    return <Navigate to="/" state={{ from: location }} replace />
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -97,6 +101,10 @@ export default function Signup() {
       <div className="w-100 text-center mt-4">
         Already have an account? &nbsp;
         <Link to="/login">Login</Link>
+      </div>
+      <div className="copyright mb-2">
+        DePaul University CSC 436 &copy; 2022 Created by{' '}
+        <a href="https://github.com/Inupedia">Inupedia</a>
       </div>
     </>
   )

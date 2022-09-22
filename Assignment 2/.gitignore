@@ -24,3 +24,6 @@ yarn-error.log*
 
 # docker
 .dockerignore
+
+# api
+firebase.config.js 

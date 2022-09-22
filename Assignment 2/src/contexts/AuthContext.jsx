@@ -4,6 +4,8 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  setPersistence,
+  browserSessionPersistence,
 } from 'firebase/auth'
 import { auth } from '../firebase'
 
@@ -28,6 +30,19 @@ export default function AuthProvider({ children }) {
   const logout = () => {
     signOut(auth)
   }
+
+  // Existing and future Auth states are now persisted in the current
+  // session only. Closing the window would clear any existing state even
+  // if a user forgets to sign out.
+  // ...
+  // New sign-in will be persisted with session persistence.
+  setPersistence(auth, browserSessionPersistence)
+    .then(() => {
+      return
+    })
+    .catch((error) => {
+      console.log(error.message)
+    })
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {

@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:500");
+
+.container {
+    font: 16px "Poppins", Arial, sans-serif;
+}
+// buttons
+.custom-button {
+    background-color: black !important;
+    border-color: black !important;
+}
+
+.logout-btn {
+    float: right;
+}
+
+.addTodo {
+    text-align: center;
+    .addTodo-btn {
+        width: 50%
+    }
+}
+
+.line {
+    background-color: rgb(112, 108, 108);
+    width: 80%;
+    height: 1px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.copyright {
+    text-align: center;
+    font-size: 0.8rem;
+    position:absolute;
+    left:0;
+    bottom:0;
+    right:0;
+}
+
+// list
+.custom-list-group-main-page {
+    height: 400px;
+    overflow: auto;
+    //margin-right: -15px;
+}
+
+.custom-list-group-item {
+    padding: 2px;
+    .custom-list-item {
+        align-items: center;
+        justify-content: center;
+        margin: 0px auto;
+        white-space: nowrap;
+        .child-status {
+            text-align: center;
+            display: inline-block;
+            width: 20%
+        }
+        .child-description{
+            text-align: left;
+            display: inline-block;
+            width: 60%
+
+        }
+        .child-edit {
+            text-align: center;
+            display: inline-block;
+            width: 20%
+        }
+        .title {
+            font-weight: bold;
+            font-size: 1em;
+        }
+        .detail {
+            font-size: 0.8em;
+            color:rgb(160, 166, 172);
+            white-space: initial;
+        }
+    }
+}
+
+.current-time {
+    font-size: 0.9em;
+}
+
+.current-day {
+    font-size: 1.2em;
+}

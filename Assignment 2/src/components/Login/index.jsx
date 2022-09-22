@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom'
 import {
   Form,
   ButtonGroup,
@@ -10,22 +10,26 @@ import {
 } from 'react-bootstrap'
 import { FaFacebook, FaGoogle, FaTwitter, FaGithub } from 'react-icons/fa'
 import { IconContext } from 'react-icons'
-import './index.scss'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
-  const { login } = useAuth()
+  const { currentUser, login } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  if (currentUser) {
+    return <Navigate to="/" state={{ from: location }} replace />
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    console.log(username)
+    // console.log(username)
 
     try {
       setError('')
@@ -148,6 +152,10 @@ export default function Login() {
           </ButtonGroup>
         </div>
       </IconContext.Provider>
+      <div className="copyright mb-2">
+        DePaul University CSC 436 &copy; 2022 Created by{' '}
+        <a href="https://github.com/Inupedia">Inupedia</a>
+      </div>
     </>
   )
 }
