@@ -1,20 +1,17 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate, Navigate } from 'react-router-dom'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../../contexts/AuthContext'
-import { Card, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 export default function Footer() {
-  const [error, setError] = useState('')
-  const location = useLocation()
   const navigate = useNavigate()
   const { logout } = useAuth()
   const handleLogout = async () => {
-    setError('')
     try {
       await logout()
       navigate('/login')
-    } catch {
-      setError('Logout Error')
+    } catch (e) {
+      console.log(e.message)
     }
   }
   return (

@@ -12,7 +12,7 @@ export default function List({ username }) {
           {todoListData.map((todoItem) => {
             return (
               <React.Fragment key={todoItem.id}>
-                <Item data={todoItem} username={username} />
+                <Item itemID={todoItem.id} username={username} />
               </React.Fragment>
             )
           })}

@@ -19,7 +19,7 @@ export default function TodoList() {
       <div>
         <Header username={username} />
         <MyList username={username} />
-        <Footer />
+        <Footer username={username} />
       </div>
     </TodoProvider>
   )

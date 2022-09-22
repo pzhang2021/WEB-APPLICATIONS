@@ -13,13 +13,19 @@
     float: right;
 }
 
-.addTodo {
-    text-align: center;
+.foot-btn {
+    text-align: right;
+    custom-toggle-btn {
+        width: 20%;
+    }
     .addTodo-btn {
         width: 50%
     }
 }
 
+.custom-clear-btn {
+    margin-left: 20px;
+}
 .line {
     background-color: rgb(112, 108, 108);
     width: 80%;
@@ -68,22 +74,37 @@
             display: inline-block;
             width: 20%
         }
-        .title {
-            font-weight: bold;
-            font-size: 1em;
-        }
-        .detail {
-            font-size: 0.8em;
-            color:rgb(160, 166, 172);
-            white-space: initial;
-        }
     }
 }
 
-.current-time {
-    font-size: 0.9em;
+.list-group-item-warning {
+    // border-bottom: 2px;
+    // border-style: solid;
+    // border-bottom-color: black;
+    background-color: rgb(255, 255, 255);
+    .urgent-bar {
+        background: black;
+        height: 2px;
+        width: 100%;
+    }
 }
 
+.title {
+    color:black;
+    font-weight: bold;
+    font-size: 1em;
+}
+.detail {
+    font-size: 0.8em;
+    color:rgb(160, 166, 172);
+    white-space: initial;
+}
+.current-time {
+    color:black;
+    font-size: 0.9em;
+}
 .current-day {
+    color:black;
     font-size: 1.2em;
 }
+

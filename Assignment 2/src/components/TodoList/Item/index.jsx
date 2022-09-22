@@ -2,22 +2,35 @@ import React, { useState } from 'react'
 import { ListGroup, Button, Row, Col } from 'react-bootstrap'
 import { FaRegEdit } from 'react-icons/fa'
 import { IconContext } from 'react-icons'
+import { useTodo } from '../../../contexts/TodoContext'
 import EditModel from './EditModel'
 
-export default function Item({ data, username }) {
+export default function Item({ itemID, username }) {
   const [modalShow, setModalShow] = useState(false)
-  const now = new Date()
+  const { getItem } = useTodo()
+  const currentItem = getItem(itemID)
   return (
-    <ListGroup.Item variant="link" className="custom-list-group-item">
+    <ListGroup.Item
+      variant={currentItem.isUrgent ? 'warning' : 'link'}
+      className="custom-list-group-item"
+    >
       <div>
         <Row className="custom-list-item">
           <Col className="child-status">
-            <div className="current-time">14 : 22</div>
-            <div className="current-day">Wed</div>
+            <div className="current-time">
+              {currentItem.time[1] + ':' + currentItem.time[2]}
+            </div>
+            <div className="current-day">{currentItem.time[0]}</div>
           </Col>
           <Col className="child-description" md="auto">
-            <div className="title">{data.title}</div>
-            <div className="detail">{data.description}</div>
+            <div className="title">
+              {currentItem.isDone ? (
+                <del>{currentItem.title}</del>
+              ) : (
+                currentItem.title
+              )}
+            </div>
+            <div className="detail">{currentItem.description}</div>
           </Col>
           <Col className="child-edit" xs lg="2">
             <Button variant="outline-dark" onClick={() => setModalShow(true)}>
@@ -29,12 +42,12 @@ export default function Item({ data, username }) {
             </Button>
           </Col>
         </Row>
+        <div className="urgent-bar"></div>
         <EditModel
           show={modalShow}
           onHide={() => setModalShow(false)}
           author={username}
-          currenttitle="Shopping"
-          currentdescription="Hello from pengju"
+          itemID={itemID}
         />
       </div>
     </ListGroup.Item>
