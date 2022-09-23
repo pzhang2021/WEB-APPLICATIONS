@@ -30,7 +30,13 @@ export default function Item({ itemID, username }) {
                 currentItem.title
               )}
             </div>
-            <div className="detail">{currentItem.description}</div>
+            <div className="detail">
+              {currentItem.isDone ? (
+                <del>{currentItem.description}</del>
+              ) : (
+                currentItem.description
+              )}
+            </div>
           </Col>
           <Col className="child-edit" xs lg="2">
             <Button variant="outline-dark" onClick={() => setModalShow(true)}>

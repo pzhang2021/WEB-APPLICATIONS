@@ -22,7 +22,7 @@ export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  if (currentUser) {
+  if (sessionStorage.getItem('username')) {
     return <Navigate to="/" state={{ from: location }} replace />
   }
 

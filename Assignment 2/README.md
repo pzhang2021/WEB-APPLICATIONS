@@ -8,6 +8,12 @@
 <details>  
   <summary>Table of Contents</summary>  
   <ol>  
+    <li>  
+      <a href="#about">About</a>  
+      <ul>  
+        <li><a href="#outline">Outline</a></li>  
+      </ul>  
+    </li>  
    <li>  
       <a href="#download">Download</a>  
       <ul>  
@@ -17,16 +23,14 @@
         <li><a href="#setup">Setup</a></li>  
       </ul>  
    </li>  
-    <li>  
-      <a href="#about">About</a>  
-      <ul>  
-        <li><a href="#outline">Outline</a></li>  
-      </ul>  
-    </li>  
   </ol>  
 </details>  
 
-
+<!-- ABOUT THE PROJECT -->  
+## About
+<a href="https://peaceful-jang-3c7065.netlify.app/">Assignment Example</a>
+### Outline
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- DOWNLOAD -->  
 
@@ -36,7 +40,7 @@ You can either left click green button "Code" to download the zip file or clone 
 
 ### Prerequisites
 
-<a href="https://nodejs.org/en/">_Node.js_</a> & <a href="https://www.mongodb.com/docs/manual/installation/">_MongoDB_</a>
+<a href="https://nodejs.org/en/">_Node.js_</a> & <a href="https://firebase.google.com/">_Firebase_</a>
 
 ### Clone
 
@@ -77,10 +81,6 @@ touch firebase.config.js
 
 <p align="right">(<a href="#top">back to top</a>)</p>  
 
-<!-- ABOUT THE PROJECT -->  
 
-## About
 
-### Outline
 
-<p align="right">(<a href="#top">back to top</a>)</p>

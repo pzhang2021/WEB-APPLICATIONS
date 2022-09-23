@@ -1,4 +1,13 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import { db } from '../firebase'
+import {
+  collection,
+  deleteDoc,
+  setDoc,
+  updateDoc,
+  doc,
+  onSnapshot,
+} from 'firebase/firestore'
 import { nanoid } from 'nanoid'
 const TodoContext = createContext()
 
@@ -7,6 +16,7 @@ export function useTodo() {
 }
 
 export default function TodoProvider({ children }) {
+  const userRef = collection(db, 'users')
   const todoListDataTemplate = [
     {
       id: nanoid(),
@@ -18,8 +28,22 @@ export default function TodoProvider({ children }) {
       isUrgent: false,
     },
   ]
-  // get todo data from mongodb
-  const [todoListData, setTodoListData] = useState(todoListDataTemplate)
+  const [todoListData, setTodoListData] = useState([])
+  // get todo data from firebase
+  useEffect(() => {
+    const unsub = onSnapshot(userRef, (snapShot) => {
+      let temp = []
+      try {
+        snapShot.docs.forEach((doc) => {
+          temp.push({ id: doc.id, ...doc.data() })
+        })
+      } catch (error) {
+        console.log(error)
+      }
+      setTodoListData(temp)
+    })
+    return unsub
+  }, [])
 
   const requestTime = () => {
     const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -32,74 +56,90 @@ export default function TodoProvider({ children }) {
     return time
   }
   // add todo
-  const addTodo = (title, description, author, isUrgent) => {
-    // randomly generate id
-    const id = nanoid()
+  const addTodo = async (title, description, author, isUrgent) => {
     // get current time
     const time = requestTime()
-    setTodoListData((prevData) => [
-      {
-        id,
-        title,
-        description,
-        isDone: false,
-        time,
-        author,
-        isUrgent: isUrgent,
-      },
-      ...prevData,
-    ])
-    console.log(todoListData)
+    const newData = {
+      title,
+      description,
+      isDone: false,
+      time,
+      author,
+      isUrgent: isUrgent,
+    }
+    await setDoc(doc(userRef), newData)
   }
 
   // get list data corresponding to its ID
-  const getItem = (itemId) => {
-    const selectedList = todoListData.filter((item) => item.id === itemId)
+  const getItem = (itemID) => {
+    const selectedList = todoListData.filter((item) => item.id === itemID)
     return selectedList[0]
   }
 
   const saveItem = (itemID, title, description) => {
-    const modifiedData = todoListData.map((item) => {
+    todoListData.map((item) => {
       if (item.id === itemID) {
-        return {
-          id: item.id,
+        const newItem = {
           title: title,
           description: description,
-          isDone: item.isDone,
-          time: item.time,
-          author: item.author,
-          isUrgent: item.isUrgent,
         }
-      } else return item
+        try {
+          updateItem(item.id, newItem)
+        } catch (error) {
+          console.log(error)
+        }
+      }
     })
-    setTodoListData(modifiedData)
   }
 
   const doneTask = (itemID) => {
     const time = requestTime()
-    const modifiedData = todoListData.map((item) => {
+    todoListData.map((item) => {
       if (item.id === itemID) {
-        return {
-          id: item.id,
-          title: item.title,
-          description: item.description,
+        const newItem = {
           isDone: true,
           time: time,
-          author: item.author,
           isUrgent: false,
         }
-      } else return item
-    })
-    setTodoListData(modifiedData)
-  }
-
-  const clearTask = () => {
-    const modifiedData = todoListData.filter((item) => {
-      if (item.isDone === false) {
-        return item
+        try {
+          updateItem(item.id, newItem)
+        } catch (error) {
+          console.log(error)
+        }
       }
     })
-    setTodoListData(modifiedData)
+  }
+
+  const updateItem = async (id, newItem) => {
+    await updateDoc(doc(db, 'users', id), newItem)
+  }
+
+  const clearTask = async () => {
+    todoListData.filter((item) => {
+      if (item.isDone && item.author === sessionStorage.getItem('username')) {
+        try {
+          deleteItem(item)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    })
+  }
+
+  const clearAll = () => {
+    todoListData.filter((item) => {
+      if (item.author === sessionStorage.getItem('username')) {
+        try {
+          deleteItem(item)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    })
+  }
+
+  const deleteItem = async (item) => {
+    await deleteDoc(doc(db, 'users', item.id))
   }
 
   const value = {
@@ -109,6 +149,7 @@ export default function TodoProvider({ children }) {
     saveItem,
     doneTask,
     clearTask,
+    clearAll,
   }
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>
 }

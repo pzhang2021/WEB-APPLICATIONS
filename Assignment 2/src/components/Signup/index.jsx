@@ -14,7 +14,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false)
   const location = useLocation()
 
-  if (currentUser) {
+  if (sessionStorage.getItem('username')) {
     return <Navigate to="/" state={{ from: location }} replace />
   }
 
