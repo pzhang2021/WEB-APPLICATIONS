@@ -8,7 +8,6 @@ import {
   doc,
   onSnapshot,
 } from 'firebase/firestore'
-import { nanoid } from 'nanoid'
 const TodoContext = createContext()
 
 export function useTodo() {
@@ -17,17 +16,18 @@ export function useTodo() {
 
 export default function TodoProvider({ children }) {
   const userRef = collection(db, 'users')
-  const todoListDataTemplate = [
-    {
-      id: nanoid(),
-      title: 'Shopping',
-      description: 'eggs, pork meat, onion, strawberry',
-      isDone: false,
-      time: ['Thu', 18, 32],
-      author: 'Mom',
-      isUrgent: false,
-    },
-  ]
+  // example of local dummy data
+  // const todoListDataTemplate = [
+  //   {
+  //     id: '0',
+  //     title: 'Shopping',
+  //     description: 'eggs, pork meat, onion, strawberry',
+  //     isDone: false,
+  //     time: ['Thu', 18, 32],
+  //     author: 'Mom',
+  //     isUrgent: false,
+  //   },
+  // ]
   const [todoListData, setTodoListData] = useState([])
   // get todo data from firebase
   useEffect(() => {
@@ -126,6 +126,7 @@ export default function TodoProvider({ children }) {
     })
   }
 
+  // eslint-disable-next-line
   const clearAll = () => {
     todoListData.filter((item) => {
       if (item.author === sessionStorage.getItem('username')) {

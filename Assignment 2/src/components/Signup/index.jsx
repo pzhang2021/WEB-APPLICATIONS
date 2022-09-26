@@ -8,7 +8,7 @@ export default function Signup() {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const passwordConfirmRef = useRef(null)
-  const { currentUser, createUser } = useAuth()
+  const { createUser } = useAuth()
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
