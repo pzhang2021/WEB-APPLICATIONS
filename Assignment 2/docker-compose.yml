@@ -1,0 +1,9 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  app:
+    container_name: react-app
+    image: react-app-image
+    build:
+      target: development
+    ports: 
+      - '3000:3000'

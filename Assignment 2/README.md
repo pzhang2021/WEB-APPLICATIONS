@@ -19,12 +19,14 @@
       <ul>  
          <li><a href="#prerequisites">Prerequisites</a></li>  
          <li><a href="#clone">Clone</a></li>  
+        <li><a href="#setup">Setup</a></li>
         <li><a href="#use">Use</a></li>
-        <li><a href="#setup">Setup</a></li>  
+         <li><a href="#docker">Docker</a></li> 
       </ul>  
    </li>  
   </ol>  
 </details>  
+
 
 <!-- ABOUT THE PROJECT -->  
 ## About
@@ -79,8 +81,17 @@ touch firebase.config.js
  npm start  
  ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>  
+### Docker
 
+```sh
+docker compose up -d
+```
+
+
+
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>  
 
 
 

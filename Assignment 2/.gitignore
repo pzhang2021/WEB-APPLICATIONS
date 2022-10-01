@@ -23,9 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # docker
-.dockerignore
-dockerfile
-docker-compose.yml
+# .dockerignore
+# dockerfile
+# docker-compose.yml
 
 # api
 firebase.config.js 
