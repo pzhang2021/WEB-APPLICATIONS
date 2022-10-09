@@ -29,14 +29,13 @@ git clone https://github.com/pzhang2021/WEB-APPLICATIONS.git
   - JavaScript review
   - Boostrap based biography
 
-- Stateless React Todo App (<a href="https://peaceful-jang-3c7065.netlify.app/">Assigment Sample</a>)
+- Stateless React Todo App (<a href="https://peaceful-jang-3c7065.netlify.app/">Assigment Example</a>)
 
   - Preliminary component: login page, todo list page
   - UI/UX: Bootstrap
   - Authentification: Firebase
-  - Database: MongoDB
+  - Database: Firebase
 
   
 
-  
   
