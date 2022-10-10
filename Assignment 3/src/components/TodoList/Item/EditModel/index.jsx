@@ -1,30 +1,39 @@
-import React, { useRef } from 'react'
-import { Button, Modal, Form, FloatingLabel } from 'react-bootstrap'
+import React, { useRef, useState } from 'react'
+import {
+  Button,
+  Modal,
+  Form,
+  FloatingLabel,
+  ToggleButton,
+} from 'react-bootstrap'
 import { useTodo } from '../../../../contexts/TodoContext'
 
 export default function EditModel(props) {
   const { onHide } = props
-  const { getItem, saveItem, doneTask } = useTodo()
+  const { getItem, updateItem, deleteItem } = useTodo()
   const currentItem = getItem(props.itemID)
   const descriptionRef = useRef()
   const titleRef = useRef()
+  const [checked, setChecked] = useState(currentItem.isDone)
 
   const handleSave = async (e) => {
     try {
-      saveItem(
+      updateItem(
         props.itemID,
         titleRef.current.value,
-        descriptionRef.current.value
+        descriptionRef.current.value,
+        checked
       )
       onHide()
     } catch (error) {}
   }
-  const handleDone = async (e) => {
-    try {
-      doneTask(props.itemID)
-      onHide()
-    } catch (error) {}
+
+  const handleDelete = async (itemID) => {
+    console.log('delete')
+    deleteItem(props.itemID)
+    onHide()
   }
+
   return (
     <Modal
       {...props}
@@ -53,6 +62,7 @@ export default function EditModel(props) {
                 placeholder="title"
                 id="edit-title"
                 disabled={currentItem.author !== props.author}
+                defaultValue={currentItem.title}
               />
             </FloatingLabel>
           </Form.Group>
@@ -64,18 +74,30 @@ export default function EditModel(props) {
               placeholder="Description"
               id="edit-description"
               disabled={currentItem.author !== props.author}
+              defaultValue={currentItem.description}
             />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button
-          variant="outline-dark"
-          onClick={handleDone}
+          variant="outline-danger"
+          onClick={handleDelete}
           disabled={currentItem.author !== props.author}
         >
-          Done
+          Delete
         </Button>
+        <ToggleButton
+          className="custom-edit-toggle-btn"
+          id="edit-toggle-check"
+          type="checkbox"
+          variant="outline-dark"
+          checked={checked}
+          value="1"
+          onChange={(e) => setChecked(e.currentTarget.checked)}
+        >
+          {checked ? 'Completed' : 'Pending'}
+        </ToggleButton>
         <Button
           variant="dark"
           onClick={handleSave}

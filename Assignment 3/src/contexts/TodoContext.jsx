@@ -1,49 +1,90 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { db } from '../firebase'
-import {
-  collection,
-  deleteDoc,
-  setDoc,
-  updateDoc,
-  doc,
-  onSnapshot,
-} from 'firebase/firestore'
+import React, { createContext, useContext, useReducer } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+
 const TodoContext = createContext()
 
 export function useTodo() {
   return useContext(TodoContext)
 }
+const ACTIONS = {
+  ADD_ITEM: 'addItem',
+  UPDATE_ITEM: 'updateItem',
+  DELETE_ITEM: 'deleteItem',
+  CLEAR_ALL_ITEMS: 'clearAllItems',
+  CLEAR_COMPLETED_ITEMS: 'clearCompletedItem',
+}
+const reducer = (todoList, action) => {
+  switch (action.type) {
+    case ACTIONS.ADD_ITEM:
+      return [...todoList, action.payload.data]
+    case ACTIONS.UPDATE_ITEM:
+      return todoList.map((item) => {
+        if (item.id === action.payload.itemID) {
+          return {
+            ...item,
+            title: action.payload.title,
+            description: action.payload.description,
+            isDone: action.payload.isDone,
+          }
+        }
+        return item
+      })
+    case ACTIONS.DELETE_ITEM:
+      return todoList.filter((item) => {
+        if (item.id !== action.payload.itemID) {
+          return item
+        }
+      })
+    case ACTIONS.CLEAR_COMPLETED_ITEMS:
+      return todoList.filter((item) => {
+        if (!item.isDone || item.author !== action.payload.username) {
+          return item
+        }
+      })
+    case ACTIONS.CLEAR_ALL_ITEMS:
+      return todoList.filter((item) => {
+        if (item.author !== action.payload.username) {
+          return item
+        }
+      })
+    default:
+      return todoList
+  }
+}
 
 export default function TodoProvider({ children }) {
-  const userRef = collection(db, 'users')
   // example of local dummy data
-  // const todoListDataTemplate = [
-  //   {
-  //     id: '0',
-  //     title: 'Shopping',
-  //     description: 'eggs, pork meat, onion, strawberry',
-  //     isDone: false,
-  //     time: ['Thu', 18, 32],
-  //     author: 'Mom',
-  //     isUrgent: false,
-  //   },
-  // ]
-  const [todoListData, setTodoListData] = useState([])
-  // get todo data from firebase
-  useEffect(() => {
-    const unsub = onSnapshot(userRef, (snapShot) => {
-      let temp = []
-      try {
-        snapShot.docs.forEach((doc) => {
-          temp.push({ id: doc.id, ...doc.data() })
-        })
-      } catch (error) {
-        console.log(error)
-      }
-      setTodoListData(temp)
-    })
-    return unsub
-  }, [])
+  const todoListDataTemplate = [
+    {
+      id: uuidv4(),
+      title: 'Important',
+      description: 'You do not have permission to edit others list',
+      isDone: false,
+      time: ['Thu', 20, 20],
+      author: 'Pengju',
+      isUrgent: true,
+    },
+    {
+      id: uuidv4(),
+      title: 'Tip',
+      description:
+        'You can register as other users (by using their username) to access it',
+      isDone: true,
+      time: ['Thu', 19, 11],
+      author: 'Pengju',
+      isUrgent: false,
+    },
+    {
+      id: uuidv4(),
+      title: 'Shopping',
+      description: 'eggs, pork meat, onion, strawberry',
+      isDone: false,
+      time: ['Thu', 18, 32],
+      author: 'Pengju',
+      isUrgent: false,
+    },
+  ]
+  const [todoList, dispatch] = useReducer(reducer, todoListDataTemplate)
 
   const requestTime = () => {
     const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -60,6 +101,7 @@ export default function TodoProvider({ children }) {
     // get current time
     const time = requestTime()
     const newData = {
+      id: uuidv4(),
       title,
       description,
       isDone: false,
@@ -67,88 +109,49 @@ export default function TodoProvider({ children }) {
       author,
       isUrgent: isUrgent,
     }
-    await setDoc(doc(userRef), newData)
+    await dispatch({ type: ACTIONS.ADD_ITEM, payload: { data: newData } })
   }
 
   // get list data corresponding to its ID
   const getItem = (itemID) => {
-    const selectedList = todoListData.filter((item) => item.id === itemID)
-    return selectedList[0]
+    const selectedItem = todoList.filter((item) => item.id === itemID)
+    return selectedItem[0]
   }
 
-  const saveItem = (itemID, title, description) => {
-    todoListData.map((item) => {
-      if (item.id === itemID) {
-        const newItem = {
-          title: title,
-          description: description,
-        }
-        try {
-          updateItem(item.id, newItem)
-        } catch (error) {
-          console.log(error)
-        }
-      }
+  const updateItem = async (itemID, title, description, isDone) => {
+    await dispatch({
+      type: ACTIONS.UPDATE_ITEM,
+      payload: { itemID, title, description, isDone },
     })
   }
 
-  const doneTask = (itemID) => {
-    const time = requestTime()
-    todoListData.map((item) => {
-      if (item.id === itemID) {
-        const newItem = {
-          isDone: true,
-          time: time,
-          isUrgent: false,
-        }
-        try {
-          updateItem(item.id, newItem)
-        } catch (error) {
-          console.log(error)
-        }
-      }
+  const deleteItem = async (itemID) => {
+    await dispatch({
+      type: ACTIONS.DELETE_ITEM,
+      payload: { itemID: itemID },
     })
   }
 
-  const updateItem = async (id, newItem) => {
-    await updateDoc(doc(db, 'users', id), newItem)
-  }
-
-  const clearTask = async () => {
-    todoListData.filter((item) => {
-      if (item.isDone && item.author === sessionStorage.getItem('username')) {
-        try {
-          deleteItem(item)
-        } catch (error) {
-          console.log(error)
-        }
-      }
+  const clearTask = async (username) => {
+    await dispatch({
+      type: ACTIONS.CLEAR_COMPLETED_ITEMS,
+      payload: { username: username },
     })
   }
 
-  // eslint-disable-next-line
-  const clearAll = () => {
-    todoListData.filter((item) => {
-      if (item.author === sessionStorage.getItem('username')) {
-        try {
-          deleteItem(item)
-        } catch (error) {
-          console.log(error)
-        }
-      }
+  const clearAll = async (username) => {
+    await dispatch({
+      type: ACTIONS.CLEAR_ALL_ITEMS,
+      payload: { username: username },
     })
-  }
-
-  const deleteItem = async (item) => {
-    await deleteDoc(doc(db, 'users', item.id))
   }
 
   const value = {
-    todoListData,
+    todoList,
     addTodo,
     getItem,
-    saveItem,
-    doneTask,
+    updateItem,
+    deleteItem,
     clearTask,
     clearAll,
   }

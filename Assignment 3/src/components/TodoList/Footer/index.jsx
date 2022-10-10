@@ -38,7 +38,7 @@ export default function Footer({ username }) {
   const handleClear = async (e) => {
     e.preventDefault()
     try {
-      await clearTask()
+      await clearTask(username)
     } catch (error) {}
   }
   return (
@@ -61,7 +61,7 @@ export default function Footer({ username }) {
         className="mb-2 custom-clear-btn"
         onClick={handleClear}
       >
-        Clear List
+        Clear Completed Task
       </Button>
       <Logout />
       <Collapse in={open}>

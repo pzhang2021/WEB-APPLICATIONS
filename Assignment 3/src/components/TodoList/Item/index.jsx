@@ -5,10 +5,8 @@ import { IconContext } from 'react-icons'
 import { useTodo } from '../../../contexts/TodoContext'
 import EditModel from './EditModel'
 
-export default function Item({ itemID, username }) {
+export default function Item({ currentItem, username }) {
   const [modalShow, setModalShow] = useState(false)
-  const { getItem } = useTodo()
-  const currentItem = getItem(itemID)
   return (
     <ListGroup.Item
       variant={currentItem.isUrgent ? 'warning' : 'link'}
@@ -53,7 +51,7 @@ export default function Item({ itemID, username }) {
           show={modalShow}
           onHide={() => setModalShow(false)}
           author={username}
-          itemID={itemID}
+          itemID={currentItem.id}
         />
       </div>
     </ListGroup.Item>

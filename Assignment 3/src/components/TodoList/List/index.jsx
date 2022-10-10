@@ -4,15 +4,15 @@ import { useTodo } from '../../../contexts/TodoContext'
 import Item from '../Item'
 
 export default function List({ username }) {
-  const { todoListData } = useTodo()
+  const { todoList } = useTodo()
   return (
     <>
       <Card>
         <ListGroup className="custom-list-group-main-page">
-          {todoListData.map((todoItem) => {
+          {todoList.map((todoItem) => {
             return (
               <React.Fragment key={todoItem.id}>
-                <Item itemID={todoItem.id} username={username} />
+                <Item currentItem={todoItem} username={username} />
               </React.Fragment>
             )
           })}

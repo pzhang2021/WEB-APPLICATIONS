@@ -6,21 +6,20 @@ import MyList from './List'
 import Header from './Header'
 import TodoProvider from '../../contexts/TodoContext'
 
-
 export default function TodoList() {
   const { currentUser } = useAuth()
   const location = useLocation()
+  // const currentUser = 'pengju'
   if (!currentUser) {
     return <Navigate to="/login" state={{ from: location }} replace />
   }
-  const username = sessionStorage.getItem('username')
 
   return (
     <TodoProvider>
       <div>
-        <Header username={username} />
-        <MyList username={username} />
-        <Footer username={username} />
+        <Header username={currentUser} />
+        <MyList username={currentUser} />
+        <Footer username={currentUser} />
       </div>
     </TodoProvider>
   )

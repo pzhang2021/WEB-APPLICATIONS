@@ -11,35 +11,38 @@ import {
 import { FaFacebook, FaGoogle, FaTwitter, FaGithub } from 'react-icons/fa'
 import { IconContext } from 'react-icons'
 import { useAuth } from '../../contexts/AuthContext'
+import md5 from 'md5'
 
 export default function Login() {
-  const [username, setUsername] = useState('')
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
-  const { login } = useAuth()
+  const { login, currentUser } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
 
-  if (sessionStorage.getItem('username')) {
+  if (currentUser) {
     return <Navigate to="/" state={{ from: location }} replace />
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // console.log(username)
-
     try {
       setError('')
       setLoading(true)
-      await login(emailRef.current.value, passwordRef.current.value)
-      sessionStorage.setItem('username', username)
-      console.log(sessionStorage.getItem('username'))
-      navigate('/', { replace: true })
+      const loginInfo = await login(
+        emailRef.current.value,
+        md5(passwordRef.current.value)
+      )
+      if (loginInfo.type) {
+        navigate('/', { replace: true })
+      } else {
+        setError(loginInfo.message)
+      }
     } catch {
-      setError('Email or password is incorrect')
+      setError('Connection error')
     }
     setLoading(false)
   }
@@ -56,23 +59,6 @@ export default function Login() {
           <h2 className="text-center mb-4">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group
-              controlId="login-username"
-              className="m-2"
-              onChange={(e) => setUsername(e.target.value)}
-            >
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Username"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="username"
-                  placeholder="Pengju"
-                  required
-                ></Form.Control>
-              </FloatingLabel>
-            </Form.Group>
             <Form.Group id="email" className="m-2">
               <FloatingLabel
                 controlId="login-email"
@@ -155,7 +141,7 @@ export default function Login() {
         </div>
       </IconContext.Provider>
       <div className="copyright mb-2">
-        DePaul University CSC 436 &copy; 2022 Created by{' '}
+        DePaul University CSC 436 &copy; 2022 Created by&nbsp;
         <a href="https://github.com/Inupedia">Inupedia</a>
       </div>
     </>

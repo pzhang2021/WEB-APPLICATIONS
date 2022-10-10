@@ -6,7 +6,8 @@ import { Button } from 'react-bootstrap'
 export default function Footer() {
   const navigate = useNavigate()
   const { logout } = useAuth()
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault()
     try {
       await logout()
       sessionStorage.clear()

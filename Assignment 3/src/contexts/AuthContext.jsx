@@ -1,13 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  setPersistence,
-  browserSessionPersistence,
-} from 'firebase/auth'
-import { auth } from '../firebase'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useReducer,
+} from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 const AuthContext = createContext()
 
@@ -15,47 +12,64 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
-export default function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+const ACTIONS = {
+  ADD_USER: 'addUser',
+  DELETE_USER: 'deleteUser',
+}
 
-  const createUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
+const reducer = (userList, action) => {
+  switch (action.type) {
+    case ACTIONS.ADD_USER:
+      return [
+        ...userList,
+        createUser(
+          action.payload.username,
+          action.payload.email,
+          action.payload.password
+        ),
+      ]
+    case ACTIONS.DELETE_USER:
+      return userList
+    default:
+      return userList
+  }
+}
+
+const createUser = (username, email, password) => {
+  return { id: uuidv4(), username: username, email: email, password: password }
+}
+
+export default function AuthProvider({ children }) {
+  const [userList, dispatch] = useReducer(reducer, [])
+  const [currentUser, setCurrentUser] = useState('')
+
+  const createUser = (username, email, password) => {
+    const userIsExist = userList.some((user) => user.email === email)
+    if (userIsExist) return false
+    dispatch({
+      type: ACTIONS.ADD_USER,
+      payload: { username, email, password },
+    })
+    setCurrentUser(username)
+    return true
   }
 
   const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
+    const userIsExist = userList.some((user) => user.email === email)
+    if (!userIsExist) return { type: false, message: 'Email does not exist' }
+    const userCheck = userList.find(
+      (user) => user.email === email && user.password === password
+    )
+    if (!userCheck)
+      return { type: false, message: 'Email or password is incorrect' }
+
+    setCurrentUser(userCheck.username)
+    return { type: true, message: 'Login Successfully' }
   }
 
   const logout = () => {
-    signOut(auth)
+    setCurrentUser('')
   }
-
-  // Existing and future Auth states are now persisted in the current
-  // session only. Closing the window would clear any existing state even
-  // if a user forgets to sign out.
-  // ...
-  // New sign-in will be persisted with session persistence.
-  setPersistence(auth, browserSessionPersistence)
-    .then(() => {
-      return
-    })
-    .catch((error) => {
-      console.log(error.message)
-    })
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      // if (authUser) {
-      //   console.log('user sign in')
-      // } else {
-      //   console.log('user sign out')
-      // }
-      setCurrentUser(authUser)
-      setLoading(false)
-    })
-    return unsubscribe
-  }, [])
 
   const value = {
     currentUser,
@@ -64,9 +78,5 @@ export default function AuthProvider({ children }) {
     logout,
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

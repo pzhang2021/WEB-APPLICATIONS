@@ -2,19 +2,20 @@ import React, { useRef, useState } from 'react'
 import { Link, useLocation, Navigate } from 'react-router-dom'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
+import md5 from 'md5'
 
 export default function Signup() {
   const usernameRef = useRef(null)
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const passwordConfirmRef = useRef(null)
-  const { createUser } = useAuth()
+  const { createUser, currentUser } = useAuth()
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const location = useLocation()
 
-  if (sessionStorage.getItem('username')) {
+  if (currentUser) {
     return <Navigate to="/" state={{ from: location }} replace />
   }
 
@@ -31,11 +32,18 @@ export default function Signup() {
 
     try {
       setLoading(true)
-      await createUser(emailRef.current.value, passwordRef.current.value)
-      setMessage('Your account has been created successfully. You can now ')
+      const isUserCreated = await createUser(
+        usernameRef.current.value,
+        emailRef.current.value,
+        md5(passwordRef.current.value)
+      )
+      if (!isUserCreated) {
+        setError(true)
+        setMessage('Email already exist')
+      }
     } catch {
       setError(true)
-      setMessage('Email already exist')
+      setMessage('Bad Network')
     }
     setLoading(false)
   }
@@ -48,7 +56,7 @@ export default function Signup() {
           {error && <Alert variant="danger">{message}</Alert>}
           {!error && message && (
             <Alert variant="success">
-              {message} <Link to="/login">login</Link>
+              {message} <Link to="/login">Success</Link>
             </Alert>
           )}
           <Form onSubmit={handleSubmit}>
@@ -103,7 +111,7 @@ export default function Signup() {
         <Link to="/login">Login</Link>
       </div>
       <div className="copyright mb-2">
-        DePaul University CSC 436 &copy; 2022 Created by{' '}
+        DePaul University CSC 436 &copy; 2022 Created by&nbsp;
         <a href="https://github.com/Inupedia">Inupedia</a>
       </div>
     </>
