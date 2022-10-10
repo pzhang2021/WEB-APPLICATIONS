@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { ListGroup, Button, Row, Col } from 'react-bootstrap'
 import { FaRegEdit } from 'react-icons/fa'
 import { IconContext } from 'react-icons'
-import { useTodo } from '../../../contexts/TodoContext'
 import EditModel from './EditModel'
 
 export default function Item({ currentItem, username }) {

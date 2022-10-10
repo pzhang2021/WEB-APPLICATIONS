@@ -34,18 +34,21 @@ const reducer = (todoList, action) => {
         if (item.id !== action.payload.itemID) {
           return item
         }
+        return false
       })
     case ACTIONS.CLEAR_COMPLETED_ITEMS:
       return todoList.filter((item) => {
         if (!item.isDone || item.author !== action.payload.username) {
           return item
         }
+        return false
       })
     case ACTIONS.CLEAR_ALL_ITEMS:
       return todoList.filter((item) => {
         if (item.author !== action.payload.username) {
           return item
         }
+        return false
       })
     default:
       return todoList
