@@ -1,0 +1,52 @@
+{
+  "users": [
+    {
+      "username": "Pengju",
+      "email": "admin@example.com",
+      "password": "21232f297a57a5a743894a0e4a801fc3",
+      "TodoListId": 0,
+      "_comment": "password is admin",
+      "id": 0
+    },
+    {
+      "username": "PengjuZ",
+      "email": "adminz@example.com",
+      "password": "21232f297a57a5a743894a0e4a801fc3",
+      "TodoListId": 1,
+      "_comment": "password is admin",
+      "id": 1
+    }
+  ],
+  "TodoList": [
+    {
+      "userId": 0,
+      "title": "Important",
+      "description": "You do not have permission to edit others list",
+      "isDone": false,
+      "time": "['Thu', 20, 20]",
+      "author": "Pengju",
+      "isUrgent": true,
+      "id": 0
+    },
+    {
+      "userId": 0,
+      "title": "Tip",
+      "description": "You can register as other users (by using their username) to access it",
+      "isDone": true,
+      "time": "['Thu', 19, 11]",
+      "author": "Pengju",
+      "isUrgent": false,
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "title": "Shopping",
+      "description": "eggs, pork meat, onion, strawberry",
+      "isDone": false,
+      "time": "['Thu', 18, 32]",
+      "author": "Pengju",
+      "isUrgent": false,
+      "id": 2
+    }
+  ]
+}
