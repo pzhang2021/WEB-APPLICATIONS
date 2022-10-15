@@ -1,50 +1,16 @@
 {
-  "name": "assignment-2",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@emotion/styled": "^11.10.4",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.2.1",
-    "firebase": "^9.10.0",
-    "md5": "^2.3.0",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.5.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^4.4.0",
-    "react-router-dom": "^6.4.0",
-    "react-scripts": "^5.0.1",
-    "typescript": "^4.8.3",
-    "uuid": "^9.0.0",
-    "web-vitals": "^2.1.4"
-  },
+  "name": "assignment-4",
+  "version": "1.0.0",
+  "description": "<div id=\"top\"></div>   <details>     <summary>Table of Contents</summary>     <ol>       <li>         <a href=\"#about\">About</a>         <ul>           <li><a href=\"#outline\">Outline</a></li>         </ul>       </li>      <li>         <a href=\"#download\">Download</a>         <ul>            <li><a href=\"#prerequisites\">Prerequisites</a></li>            <li><a href=\"#clone\">Clone</a></li>           <li><a href=\"#use\">Use</a></li>       </ul>      </li>     </ol>   </details>",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "concurrently \"cd server && npm start\" \"cd front && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "sass": "^1.55.0"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.4.0"
   }
 }

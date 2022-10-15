@@ -48,7 +48,7 @@ Clone the repo
 
  ```sh 
  git clone https://github.com/pzhang2021/WEB-APPLICATIONS.git  
- cd Assignment\ 3/ 
+ cd Assignment\ 4/ 
  ```
 
 
@@ -56,6 +56,10 @@ Clone the repo
 
  ```sh 
  # package install
+ npm install
+ cd server
+ npm install
+ cd front
  npm install   
  ```
 

@@ -23,9 +23,15 @@
       "TodoListId": 1,
       "_comment": "password is admin",
       "id": 2
+    },
+    {
+      "username": "Hello",
+      "email": "admina@example.com",
+      "password": "21232f297a57a5a743894a0e4a801fc3",
+      "userId": "kJ2rrEuTwLCmPiilRSMl4"
     }
   ],
-  "TodoList": [
+  "todoList": [
     {
       "userId": 0,
       "title": "Important",
