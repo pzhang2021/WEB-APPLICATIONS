@@ -4,14 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "concurrently --kill-others \"npm run serverStart\" \"npm run authStart\"",
+    "serverStart": "nodemon server.js",
+    "authStart": "nodemon authServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^7.4.0",
     "json-server": "^0.17.0",
     "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1"
   }
 }

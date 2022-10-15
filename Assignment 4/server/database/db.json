@@ -15,6 +15,14 @@
       "TodoListId": 1,
       "_comment": "password is admin",
       "id": 1
+    },
+    {
+      "username": "PengjuZ",
+      "email": "adminz@example.com",
+      "password": "admin",
+      "TodoListId": 1,
+      "_comment": "password is admin",
+      "id": 2
     }
   ],
   "TodoList": [
