@@ -1,11 +1,6 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useReducer,
-} from 'react'
-import { v4 as uuidv4 } from 'uuid'
-
+import React, { createContext, useContext, useState, useReducer } from 'react'
+import axios from 'axios'
+import url from '../config/url'
 const AuthContext = createContext()
 
 export function useAuth() {
@@ -36,35 +31,38 @@ const reducer = (userList, action) => {
 }
 
 const createUser = (username, email, password) => {
-  return { id: uuidv4(), username: username, email: email, password: password }
+  return { username: username, email: email, password: password }
 }
 
 export default function AuthProvider({ children }) {
   const [userList, dispatch] = useReducer(reducer, [])
   const [currentUser, setCurrentUser] = useState('')
+  const [authData, setAuthData] = useState('')
 
   const createUser = (username, email, password) => {
-    const userIsExist = userList.some((user) => user.email === email)
-    if (userIsExist) return false
-    dispatch({
-      type: ACTIONS.ADD_USER,
-      payload: { username, email, password },
-    })
-    setCurrentUser(username)
-    return true
+    axios
+      .post(url.authUrl + '/auth/signup', { username, email, password })
+      .then((response) => {
+        setAuthData(response.data)
+      })
+    if (authData.status === 1) return { type: false, message: authData.error }
+    else {
+      setCurrentUser(authData.username)
+      return { type: true, message: 'Login Successfully' }
+    }
   }
 
   const login = (email, password) => {
-    const userIsExist = userList.some((user) => user.email === email)
-    if (!userIsExist) return { type: false, message: 'Email does not exist' }
-    const userCheck = userList.find(
-      (user) => user.email === email && user.password === password
-    )
-    if (!userCheck)
-      return { type: false, message: 'Email or password is incorrect' }
-
-    setCurrentUser(userCheck.username)
-    return { type: true, message: 'Login Successfully' }
+    axios
+      .post(url.authUrl + '/auth/login', { email, password })
+      .then((response) => {
+        setAuthData(response.data)
+      })
+    if (authData.status === 1) return { type: false, message: authData.error }
+    else {
+      setCurrentUser(authData.username)
+      return { type: true, message: 'Login Successfully' }
+    }
   }
 
   const logout = () => {

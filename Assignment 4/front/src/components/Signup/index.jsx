@@ -32,14 +32,14 @@ export default function Signup() {
 
     try {
       setLoading(true)
-      const isUserCreated = await createUser(
+      const callback = await createUser(
         usernameRef.current.value,
         emailRef.current.value,
         md5(passwordRef.current.value)
       )
-      if (!isUserCreated) {
+      if (!callback.type) {
         setError(true)
-        setMessage('Email already exist')
+        setMessage(callback.message)
       }
     } catch {
       setError(true)
