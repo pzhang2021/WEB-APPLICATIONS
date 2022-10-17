@@ -3,9 +3,10 @@ import jwt from "jsonwebtoken";
 import { nanoid } from "nanoid";
 import { Low, JSONFile } from "lowdb";
 import keys from "./config/token.secret.keys.js";
+import cors from "cors";
 const app = express();
 
-// const db = JSON.parse(fs.readFileSync('./database/db.json', 'utf-8'))
+app.use(cors({ origin: "http://localhost:3000" }));
 
 const db = new Low(new JSONFile("./database/db.json"));
 await db.read();
@@ -26,62 +27,56 @@ const isRegistered = (email) => {
   return index !== -1;
 };
 
+const getUser = (email) => {
+  const { users } = db.data;
+  const user = users.find((user) => user.email === email);
+  return user;
+};
+
 const createUser = (username, email, password) => {
   const { users } = db.data;
   const userId = nanoid();
   users.push({ username, email, password, userId });
   db.write();
+  return userId;
 };
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) return res.status(401).json({ error: "missing token" });
-  jwt.verify(
-    token,
-    keys.access_token_secret_key,
-    {
-      algorithm: "HS256",
-    },
-    (err, email) => {
-      if (err) return res.status(401).json({ error: "token invalid" });
-      console.log(email);
-      req.email = email;
-      next();
-    }
-  );
-};
 // create user
 app.post("/auth/signup", (req, res, next) => {
   const { username, email, password } = req.body;
   if (isRegistered(email)) {
-    res.status(403).json({ error: "email already registered" });
+    res.json({ status: 1, error: "Email already registered" });
   } else {
-    createUser(username, email, password);
-    const accessToken = jwt.sign(email, keys.access_token_secret_key, {
+    const userId = createUser(username, email, password);
+    const accessToken = jwt.sign(userId, keys.access_token_secret_key, {
       algorithm: "HS256",
     });
-    res.status(201).json({ accessToken: accessToken });
+    res.json({ status: 0, username, accessToken, userId });
   }
-});
-
-// test login
-app.post("/todo/add", authenticateToken, (req, res) => {
-  res.json(db.todoList.filter((post) => post.id === 1));
 });
 
 // login
 app.post("/auth/login", (req, res) => {
   const { email, password } = req.body;
   if (!isAuthenticated(email, password)) {
-    res.status(401).json({ error: "incorrect username or password" });
+    res
+      .status(401)
+      .json({ status: 1, error: "Email or password is incorrect" });
   } else {
-    const accessToken = jwt.sign(email, keys.access_token_secret_key, {
+    const user = getUser(email);
+    const accessToken = jwt.sign(user.userId, keys.access_token_secret_key, {
       algorithm: "HS256",
     });
-    res.json({ accessToken: accessToken });
+    res.json({
+      status: 0,
+      username: user.username,
+      accessToken,
+      userId: user.userId,
+    });
   }
 });
+
+// refresh token
 
 app.listen(4001, () => {
   console.log("Auth Server is running at http://localhost:4001");

@@ -11,7 +11,7 @@
     <li>  
       <a href="#about">About</a>  
       <ul>  
-        <li><a href="#outline">Outline</a></li>  
+        <li><a href="#apis">APIs</a></li>  
       </ul>  
     </li>  
    <li>  
@@ -26,10 +26,22 @@
 </details>  
 
 
+
 <!-- ABOUT THE PROJECT -->  
+
 ## About
 <a href="https://peaceful-jang-3c7065.netlify.app/">Assignment Example</a>
-### Outline
+### APIs
+
+- Auth
+  - /auth/login
+    - **Success return** { status: 0, accessToken: accessToken }
+    - **Fail return** { status: 1, error: "with corresponding error" }
+  - /auth/signup
+    - **Success return** { status: 0, accessToken: accessToken }
+    - **Fail return** { status: 1, error: "with corresponding error" }
+- Todo List
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- DOWNLOAD -->  
