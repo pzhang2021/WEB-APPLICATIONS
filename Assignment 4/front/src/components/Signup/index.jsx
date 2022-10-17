@@ -9,13 +9,13 @@ export default function Signup() {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const passwordConfirmRef = useRef(null)
-  const { createUser, currentUser } = useAuth()
+  const { createUser } = useAuth()
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const location = useLocation()
 
-  if (currentUser) {
+  if (localStorage.getItem('token')) {
     return <Navigate to="/" state={{ from: location }} replace />
   }
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link, useNavigate, Navigate, useLocation } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import {
   Form,
   ButtonGroup,
@@ -16,13 +16,12 @@ import md5 from 'md5'
 export default function Login() {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
-  const { login, currentUser } = useAuth()
+  const { login } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
   const location = useLocation()
 
-  if (currentUser) {
+  if (localStorage.getItem('token')) {
     return <Navigate to="/" state={{ from: location }} replace />
   }
 
@@ -36,9 +35,7 @@ export default function Login() {
         emailRef.current.value,
         md5(passwordRef.current.value)
       )
-      if (loginInfo.type) {
-        navigate('/', { replace: true })
-      } else {
+      if (!loginInfo.type) {
         setError(loginInfo.message)
       }
     } catch {

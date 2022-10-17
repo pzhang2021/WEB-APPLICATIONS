@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useReducer } from 'react'
+import React, { createContext, useContext } from 'react'
 import axios from 'axios'
 import url from '../config/url'
 const AuthContext = createContext()
@@ -7,70 +7,58 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
-const ACTIONS = {
-  ADD_USER: 'addUser',
-  DELETE_USER: 'deleteUser',
-}
-
-const reducer = (userList, action) => {
-  switch (action.type) {
-    case ACTIONS.ADD_USER:
-      return [
-        ...userList,
-        createUser(
-          action.payload.username,
-          action.payload.email,
-          action.payload.password
-        ),
-      ]
-    case ACTIONS.DELETE_USER:
-      return userList
-    default:
-      return userList
-  }
-}
-
-const createUser = (username, email, password) => {
-  return { username: username, email: email, password: password }
-}
-
 export default function AuthProvider({ children }) {
-  const [userList, dispatch] = useReducer(reducer, [])
-  const [currentUser, setCurrentUser] = useState('')
-  const [authData, setAuthData] = useState('')
-
-  const createUser = (username, email, password) => {
-    axios
-      .post(url.authUrl + '/auth/signup', { username, email, password })
-      .then((response) => {
-        setAuthData(response.data)
-      })
-    if (authData.status === 1) return { type: false, message: authData.error }
-    else {
-      setCurrentUser(authData.username)
-      return { type: true, message: 'Login Successfully' }
+  // control token for todo list
+  const tokenController = (state, username, token, userId) => {
+    if (state) {
+      localStorage.setItem('username', username)
+      localStorage.setItem('token', token)
+      localStorage.setItem('userId', userId)
+    } else {
+      localStorage.removeItem('username')
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
     }
   }
 
-  const login = (email, password) => {
-    axios
-      .post(url.authUrl + '/auth/login', { email, password })
-      .then((response) => {
-        setAuthData(response.data)
-      })
-    if (authData.status === 1) return { type: false, message: authData.error }
-    else {
-      setCurrentUser(authData.username)
+  const createUser = async (username, email, password) => {
+    const promise = await axios.post(url.authUrl + '/auth/signup', {
+      username,
+      email,
+      password,
+    })
+
+    if (promise.data.status === 0) {
+      tokenController(true, promise.data.username, promise.data.accessToken)
       return { type: true, message: 'Login Successfully' }
+    } else {
+      return { type: false, message: promise.data.error }
+    }
+  }
+
+  const login = async (email, password) => {
+    const promise = await axios.post(url.authUrl + '/auth/login', {
+      email,
+      password,
+    })
+    if (promise.data.status === 0) {
+      tokenController(
+        true,
+        promise.data.username,
+        promise.data.accessToken,
+        promise.data.userId
+      )
+      return { type: true, message: 'Login Successfully' }
+    } else {
+      return { type: false, message: promise.data.error }
     }
   }
 
   const logout = () => {
-    setCurrentUser('')
+    tokenController(false)
   }
 
   const value = {
-    currentUser,
     createUser,
     login,
     logout,
