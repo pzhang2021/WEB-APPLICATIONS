@@ -12,50 +12,38 @@
       "email": "username@163.com",
       "password": "4297f44b13955235245b2497399d7a93",
       "userId": "KsIz3VfWe-UfOvnjzmEtb"
-    },
-    {
-      "username": "kayesara",
-      "email": "inupedia.official@gmail.com",
-      "password": "4297f44b13955235245b2497399d7a93",
-      "userId": "y9JQv1k5X-A0RKxGRC667"
-    },
-    {
-      "username": "kayesara",
-      "email": "inupedia.official@gmail.com1",
-      "password": "4297f44b13955235245b2497399d7a93",
-      "userId": "dBrU3iMdjQ5GQphx1TJXN"
     }
   ],
   "todoList": [
     {
-      "userId": 0,
-      "title": "Important",
-      "description": "You do not have permission to edit others list",
-      "isDone": false,
-      "time": "['Thu', 20, 20]",
-      "author": "Pengju",
-      "isUrgent": true,
-      "id": 0
-    },
-    {
-      "userId": 0,
-      "title": "Tip",
-      "description": "You can register as other users (by using their username) to access it",
-      "isDone": true,
-      "time": "['Thu', 19, 11]",
-      "author": "Pengju",
-      "isUrgent": false,
-      "id": 1
-    },
-    {
-      "userId": 1,
+      "userId": "dBrU3iMdjQ5GQphx1TJXN",
       "title": "Shopping",
       "description": "eggs, pork meat, onion, strawberry",
       "isDone": false,
       "time": "['Thu', 18, 32]",
       "author": "Pengju",
       "isUrgent": false,
-      "id": 2
+      "id": "2"
+    },
+    {
+      "title": "Shopping",
+      "description": "eggs, pork meat, onion, strawberry",
+      "isDone": false,
+      "time": "['Thu', 18, 32]",
+      "author": "Pengju",
+      "isUrgent": false,
+      "todoId": "rePoGXOKmX-U5ADCI8xLp",
+      "userId": "0"
+    },
+    {
+      "title": "Shopping",
+      "description": "eggs, pork meat, onion, strawberry",
+      "isDone": false,
+      "time": "['Thu', 18, 32]",
+      "author": "Pengju",
+      "isUrgent": false,
+      "todoId": "FEnPNTdpJCbl5os4HEBoO",
+      "userId": "0"
     }
   ]
 }
