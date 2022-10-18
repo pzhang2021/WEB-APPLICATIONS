@@ -29,7 +29,6 @@ export default function EditModel(props) {
   }
 
   const handleDelete = async (itemID) => {
-    console.log('delete')
     deleteItem(props.itemID)
     onHide()
   }

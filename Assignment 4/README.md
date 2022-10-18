@@ -41,6 +41,12 @@
     - **Success return** { status: 0, accessToken: accessToken }
     - **Fail return** { status: 1, error: "with corresponding error" }
 - Todo List
+  - /todo/list 
+  - /todo/add 
+  - /todo/edit 
+  - /todo/delete/:id
+  - /todo/reset 
+  - /todo/clear
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

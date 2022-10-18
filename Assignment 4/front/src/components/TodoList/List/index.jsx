@@ -9,13 +9,17 @@ export default function List({ username }) {
     <>
       <Card>
         <ListGroup className="custom-list-group-main-page">
-          {todoList.map((todoItem) => {
-            return (
-              <React.Fragment key={todoItem.id}>
-                <Item currentItem={todoItem} username={username} />
-              </React.Fragment>
-            )
-          })}
+          {todoList.length === 0 ? (
+            <h2 className="text-center mt-2">no schedule yet</h2>
+          ) : (
+            todoList.map((todoItem) => {
+              return (
+                <React.Fragment key={todoItem.todoId}>
+                  <Item currentItem={todoItem} username={username} />
+                </React.Fragment>
+              )
+            })
+          )}
         </ListGroup>
       </Card>
     </>

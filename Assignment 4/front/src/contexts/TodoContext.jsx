@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer } from 'react'
+import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
 
 const TodoContext = createContext()
@@ -6,50 +7,15 @@ const TodoContext = createContext()
 export function useTodo() {
   return useContext(TodoContext)
 }
+
 const ACTIONS = {
-  ADD_ITEM: 'addItem',
-  UPDATE_ITEM: 'updateItem',
-  DELETE_ITEM: 'deleteItem',
-  CLEAR_ALL_ITEMS: 'clearAllItems',
-  CLEAR_COMPLETED_ITEMS: 'clearCompletedItem',
+  FETCH_DATA: 'fetchData',
 }
+
 const reducer = (todoList, action) => {
   switch (action.type) {
-    case ACTIONS.ADD_ITEM:
-      return [...todoList, action.payload.data]
-    case ACTIONS.UPDATE_ITEM:
-      return todoList.map((item) => {
-        if (item.id === action.payload.itemID) {
-          return {
-            ...item,
-            title: action.payload.title,
-            description: action.payload.description,
-            isDone: action.payload.isDone,
-          }
-        }
-        return item
-      })
-    case ACTIONS.DELETE_ITEM:
-      return todoList.filter((item) => {
-        if (item.id !== action.payload.itemID) {
-          return item
-        }
-        return false
-      })
-    case ACTIONS.CLEAR_COMPLETED_ITEMS:
-      return todoList.filter((item) => {
-        if (!item.isDone || item.author !== action.payload.username) {
-          return item
-        }
-        return false
-      })
-    case ACTIONS.CLEAR_ALL_ITEMS:
-      return todoList.filter((item) => {
-        if (item.author !== action.payload.username) {
-          return item
-        }
-        return false
-      })
+    case ACTIONS.FETCH_DATA:
+      return action.payload
     default:
       return todoList
   }
@@ -87,24 +53,59 @@ export default function TodoProvider({ children }) {
       isUrgent: false,
     },
   ]
-  const [todoList, dispatch] = useReducer(reducer, todoListDataTemplate)
+  const [todoList, dispatch] = useReducer(reducer, [])
 
   const requestTime = () => {
     const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const current = new Date()
-    const time = [
-      weeks[current.getDay()],
-      current.getHours(),
-      current.getMinutes(),
-    ]
+    const time = {
+      Day: weeks[current.getDay()],
+      Hour: current.getHours(),
+      Minute: current.getMinutes(),
+    }
     return time
   }
+
+  // get list data corresponding to its ID
+  const getItem = (itemID) => {
+    const selectedItem = todoList.filter((item) => item.todoId === itemID)
+    return selectedItem[0]
+  }
+
+  // general ajax function
+  const ajax = async (url, method, params) => {
+    const token = localStorage.getItem('token')
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    const response = await axios({
+      method,
+      url,
+      data: params,
+      ...config,
+    })
+    return response
+  }
+
+  const fetchData = () => {
+    const url = 'http://localhost:4000/todo/list'
+    ajax(url, 'get').then((response) => {
+      const res = response.data
+      dispatch({ type: ACTIONS.FETCH_DATA, payload: res.data })
+    })
+  }
+  // render todo list from fetched data through useEffect
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   // add todo
   const addTodo = async (title, description, author, isUrgent) => {
     // get current time
     const time = requestTime()
     const newData = {
-      id: uuidv4(),
       title,
       description,
       isDone: false,
@@ -112,41 +113,46 @@ export default function TodoProvider({ children }) {
       author,
       isUrgent: isUrgent,
     }
-    await dispatch({ type: ACTIONS.ADD_ITEM, payload: { data: newData } })
-  }
-
-  // get list data corresponding to its ID
-  const getItem = (itemID) => {
-    const selectedItem = todoList.filter((item) => item.id === itemID)
-    return selectedItem[0]
+    const url = 'http://localhost:4000/todo/add'
+    const response = await ajax(url, 'post', newData)
+    const res = response.data
+    dispatch({ type: ACTIONS.FETCH_DATA, payload: res.data })
   }
 
   const updateItem = async (itemID, title, description, isDone) => {
-    await dispatch({
-      type: ACTIONS.UPDATE_ITEM,
-      payload: { itemID, title, description, isDone },
-    })
+    const url = 'http://localhost:4000/todo/edit'
+    const time = requestTime()
+    const params = {
+      todoId: itemID,
+      title,
+      description,
+      time,
+      isDone,
+    }
+    const response = await ajax(url, 'post', params)
+    const res = response.data
+    dispatch({ type: ACTIONS.FETCH_DATA, payload: res.data })
   }
 
   const deleteItem = async (itemID) => {
-    await dispatch({
-      type: ACTIONS.DELETE_ITEM,
-      payload: { itemID: itemID },
-    })
+    const url = `http://localhost:4000/todo/delete/${itemID}`
+    const response = await ajax(url, 'delete')
+    const res = response.data
+    dispatch({ type: ACTIONS.FETCH_DATA, payload: res.data })
   }
 
-  const clearTask = async (username) => {
-    await dispatch({
-      type: ACTIONS.CLEAR_COMPLETED_ITEMS,
-      payload: { username: username },
-    })
+  const clearTask = async () => {
+    const url = `http://localhost:4000/todo/clear`
+    const response = await ajax(url, 'post')
+    const res = response.data
+    dispatch({ type: ACTIONS.FETCH_DATA, payload: res.data })
   }
 
-  const clearAll = async (username) => {
-    await dispatch({
-      type: ACTIONS.CLEAR_ALL_ITEMS,
-      payload: { username: username },
-    })
+  const clearAll = async () => {
+    const url = 'http://localhost:4000/todo/reset'
+    const response = await ajax(url, 'delete')
+    const res = response.data
+    dispatch({ type: ACTIONS.FETCH_DATA, payload: res.data })
   }
 
   const value = {

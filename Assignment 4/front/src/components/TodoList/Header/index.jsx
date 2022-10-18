@@ -7,7 +7,7 @@ export default function Header({ username }) {
   const handleReset = async (e) => {
     e.preventDefault()
     try {
-      await clearAll(username)
+      await clearAll()
     } catch (error) {}
   }
   return (

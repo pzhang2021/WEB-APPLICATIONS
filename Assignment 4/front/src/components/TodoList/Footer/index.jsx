@@ -38,7 +38,7 @@ export default function Footer({ username }) {
   const handleClear = async (e) => {
     e.preventDefault()
     try {
-      await clearTask(username)
+      await clearTask()
     } catch (error) {}
   }
   return (

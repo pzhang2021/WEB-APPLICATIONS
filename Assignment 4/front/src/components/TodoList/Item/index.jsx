@@ -15,9 +15,9 @@ export default function Item({ currentItem, username }) {
         <Row className="custom-list-item">
           <Col className="child-status">
             <div className="current-time">
-              {currentItem.time[1] + ':' + currentItem.time[2]}
+              {currentItem.time["Hour"] + ':' + currentItem.time["Minute"]}
             </div>
-            <div className="current-day">{currentItem.time[0]}</div>
+            <div className="current-day">{currentItem.time["Day"]}</div>
           </Col>
           <Col className="child-description" md="auto">
             <div className="title">
@@ -50,7 +50,7 @@ export default function Item({ currentItem, username }) {
           show={modalShow}
           onHide={() => setModalShow(false)}
           author={username}
-          itemID={currentItem.id}
+          itemID={currentItem.todoId}
         />
       </div>
     </ListGroup.Item>

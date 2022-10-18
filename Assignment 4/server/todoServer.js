@@ -4,7 +4,9 @@ import { nanoid } from "nanoid";
 import { Low, JSONFile } from "lowdb";
 const app = express();
 import keys from "./config/token.secret.keys.js";
+import cors from "cors";
 
+app.use(cors({ origin: "http://localhost:3000" }));
 const db = new Low(new JSONFile("./database/db.json"));
 await db.read();
 
@@ -31,7 +33,10 @@ const authenticateToken = (req, res, next) => {
 // retrieve todo list
 app.get("/todo/list", authenticateToken, (req, res) => {
   const { todoList } = db.data;
-  res.json(todoList.filter((post) => post.userId === req.userId));
+  res.json({
+    status: 0,
+    data: todoList.filter((post) => post.userId === req.userId),
+  });
 });
 
 // add todo list
@@ -41,20 +46,26 @@ app.post("/todo/add", authenticateToken, (req, res) => {
   const todoId = nanoid();
   todoList.push({ ...data, todoId, userId: req.userId });
   db.write();
-  res.json({ status: 0, todoId });
+  res.json({
+    status: 0,
+    data: todoList.filter((post) => post.userId === req.userId),
+  });
 });
 
-// delete todo list
-app.delete("/todo/delete", authenticateToken, (req, res) => {
+// delete todo list through params
+app.delete("/todo/delete/:id", authenticateToken, (req, res) => {
   const { todoList } = db.data;
-  const { todoId } = req.body;
-  const index = todoList.findIndex((post) => post.todoId === todoId);
-  if (index !== -1) {
+  const { id } = req.params;
+  const index = todoList.findIndex((post) => post.todoId === id);
+  if (index === -1) {
+    res.status(404).json({ error: "todo not found" });
+  } else {
     todoList.splice(index, 1);
     db.write();
-    res.json({ status: 0 });
-  } else {
-    res.json({ status: 1, error: "Todo not found" });
+    res.json({
+      status: 0,
+      data: todoList.filter((post) => post.userId === req.userId),
+    });
   }
 });
 
@@ -62,14 +73,57 @@ app.delete("/todo/delete", authenticateToken, (req, res) => {
 app.post("/todo/edit", authenticateToken, (req, res) => {
   const { todoList } = db.data;
   const { ...data } = req.body;
-  const index = todoList.findIndex((post) => post.id === data.id);
+  const index = todoList.findIndex((post) => post.todoId === data.todoId);
   if (index !== -1) {
-    todoList[index] = data;
+    const newData = {
+      title: data.title,
+      description: data.description,
+      isDone: data.isDone,
+      time: data.time,
+      author: todoList[index].author,
+      isUrgent: todoList[index].isUrgent,
+      todoId: data.todoId,
+      userId: todoList[index].userId,
+    };
+    todoList[index] = newData;
     db.write();
-    res.json(data);
+    res.json({
+      status: 0,
+      data: todoList.filter((post) => post.userId === req.userId),
+    });
   } else {
     res.json({ error: "todo not found" });
   }
+});
+
+// reset the todo list to empty list
+app.delete("/todo/reset", authenticateToken, (req, res) => {
+  const { todoList } = db.data;
+  const newList = todoList.filter((post) => post.userId !== req.userId);
+  todoList.length = 0;
+  todoList.push(...newList);
+  db.write();
+  res.json({
+    status: 0,
+    data: todoList.filter((post) => post.userId === req.userId),
+  });
+});
+
+// clear the todo list if it is completed
+app.post("/todo/clear", authenticateToken, (req, res) => {
+  const { todoList } = db.data;
+  const newList = todoList.filter(
+    (post) =>
+      (post.userId === req.userId && post.isDone === false) ||
+      post.userId !== req.userId
+  );
+  todoList.length = 0;
+  todoList.push(...newList);
+  db.write();
+  res.json({
+    status: 0,
+    data: todoList.filter((post) => post.userId === req.userId),
+  });
 });
 
 app.listen(4000, () => {

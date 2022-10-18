@@ -2,48 +2,25 @@
   "users": [
     {
       "username": "Pengju",
-      "email": "admin@example.com",
-      "password": "21232f297a57a5a743894a0e4a801fc3",
-      "_comment": "password is admin",
-      "userId": 0
-    },
-    {
-      "username": "username",
-      "email": "username@163.com",
+      "email": "pzhang13@depaul.edu",
       "password": "4297f44b13955235245b2497399d7a93",
-      "userId": "KsIz3VfWe-UfOvnjzmEtb"
+      "userId": "7hNgzfyFRCV40aDcOO0OQ"
     }
   ],
   "todoList": [
     {
-      "userId": "dBrU3iMdjQ5GQphx1TJXN",
       "title": "Shopping",
-      "description": "eggs, pork meat, onion, strawberry",
+      "description": "Strawberry, Banana, Apple",
       "isDone": false,
-      "time": "['Thu', 18, 32]",
+      "time": {
+        "Day": "Mon",
+        "Hour": 23,
+        "Minute": 32
+      },
       "author": "Pengju",
       "isUrgent": false,
-      "id": "2"
-    },
-    {
-      "title": "Shopping",
-      "description": "eggs, pork meat, onion, strawberry",
-      "isDone": false,
-      "time": "['Thu', 18, 32]",
-      "author": "Pengju",
-      "isUrgent": false,
-      "todoId": "rePoGXOKmX-U5ADCI8xLp",
-      "userId": "0"
-    },
-    {
-      "title": "Shopping",
-      "description": "eggs, pork meat, onion, strawberry",
-      "isDone": false,
-      "time": "['Thu', 18, 32]",
-      "author": "Pengju",
-      "isUrgent": false,
-      "todoId": "FEnPNTdpJCbl5os4HEBoO",
-      "userId": "0"
+      "todoId": "PyKmgOkHkiY56CqqUW0vF",
+      "userId": "7hNgzfyFRCV40aDcOO0OQ"
     }
   ]
 }
