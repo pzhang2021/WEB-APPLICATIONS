@@ -37,3 +37,7 @@ git clone https://github.com/pzhang2021/WEB-APPLICATIONS.git
 - React App Stateful Refactoring
   - Login & Todo list pages from Assignment 2
   - Move Authentication & Database from Firebase to local for future API use
+
+- React App Data Persistence w/ Mock API
+  - Login & Todo list pages from Assignment 3
+  - Express + lowdb to mock API request
