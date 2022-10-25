@@ -7,14 +7,5 @@
 # dependencies
 *node_modules/
 
-# lab instruction
-*README.pdf
-*lab2.pdf
-*lab3.pdf
-
 # lectures
-/l1
-/l2
-/l3
-/l4
-/l5
+/lectures
