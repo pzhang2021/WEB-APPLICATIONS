@@ -1,0 +1,16 @@
+{
+  "name": "assignment-4",
+  "version": "1.0.0",
+  "description": "<div id=\"top\"></div>   <details>     <summary>Table of Contents</summary>     <ol>       <li>         <a href=\"#about\">About</a>         <ul>           <li><a href=\"#outline\">Outline</a></li>         </ul>       </li>      <li>         <a href=\"#download\">Download</a>         <ul>            <li><a href=\"#prerequisites\">Prerequisites</a></li>            <li><a href=\"#clone\">Clone</a></li>           <li><a href=\"#use\">Use</a></li>       </ul>      </li>     </ol>   </details>",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd server && npm start\" \"cd front && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
+}
