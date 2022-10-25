@@ -54,7 +54,7 @@
 
 ## Download
 
-You can either left click green button "Code" to download the zip file or clone the repository as following steps.
+You can either click green button "Code" to download the zip file or clone the repository as following steps.
 
 ### Prerequisites
 

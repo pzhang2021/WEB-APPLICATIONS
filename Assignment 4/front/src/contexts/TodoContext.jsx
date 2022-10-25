@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react'
 import axios from 'axios'
-import { v4 as uuidv4 } from 'uuid'
 
 const TodoContext = createContext()
 
@@ -22,37 +21,6 @@ const reducer = (todoList, action) => {
 }
 
 export default function TodoProvider({ children }) {
-  // example of local dummy data
-  const todoListDataTemplate = [
-    {
-      id: uuidv4(),
-      title: 'Important',
-      description: 'You do not have permission to edit others list',
-      isDone: false,
-      time: ['Thu', 20, 20],
-      author: 'Pengju',
-      isUrgent: true,
-    },
-    {
-      id: uuidv4(),
-      title: 'Tip',
-      description:
-        'You can register as other users (by using their username) to access it',
-      isDone: true,
-      time: ['Thu', 19, 11],
-      author: 'Pengju',
-      isUrgent: false,
-    },
-    {
-      id: uuidv4(),
-      title: 'Shopping',
-      description: 'eggs, pork meat, onion, strawberry',
-      isDone: false,
-      time: ['Thu', 18, 32],
-      author: 'Pengju',
-      isUrgent: false,
-    },
-  ]
   const [todoList, dispatch] = useReducer(reducer, [])
 
   const requestTime = () => {
