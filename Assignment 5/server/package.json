@@ -4,23 +4,21 @@
   "description": "",
   "exports": "./index.js",
   "scripts": {
-    "start": "concurrently --kill-others \"npm run todoStart\" \"npm run authStart\"",
-    "todoStart": "nodemon todoServer.js",
-    "authStart": "nodemon authServer.js",
+    "start": "nodemon dbServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^7.4.0",
+    "concurrently": "^7.5.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "cors": "^2.8.5",
+    "@apollo/server": "^4.0.4",
     "express": "^4.18.2",
-    "jsonwebtoken": "^8.5.1",
-    "lowdb": "^3.0.0",
+    "graphql": "^16.6.0",
+    "mongoose": "^6.7.0",
     "nanoid": "^4.0.0"
   },
   "type": "module"
