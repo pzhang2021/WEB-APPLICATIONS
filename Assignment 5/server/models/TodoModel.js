@@ -13,7 +13,7 @@ const todoSchema = new Schema({
   author: String,
   isUrgent: Boolean,
   todoId: String,
-  userId: String,
+  userID: String,
 });
 
 const TodoModel = mongoose.model("Todo", todoSchema);

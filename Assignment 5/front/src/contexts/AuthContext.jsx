@@ -9,20 +9,20 @@ export function useAuth() {
 
 export default function AuthProvider({ children }) {
   // control token for todo list
-  const tokenController = (state, username, token, userId) => {
+  const tokenController = (state, username, token, userID) => {
     if (state) {
       localStorage.setItem('username', username)
       localStorage.setItem('token', token)
-      localStorage.setItem('userId', userId)
+      localStorage.setItem('userID', userID)
     } else {
       localStorage.removeItem('username')
       localStorage.removeItem('token')
-      localStorage.removeItem('userId')
+      localStorage.removeItem('userID')
     }
   }
 
   const createUser = async (username, email, password) => {
-    const promise = await axios.post(url.authUrl + '/auth/signup', {
+    const promise = await axios.post(url.authUrl + '/auth/register', {
       username,
       email,
       password,
@@ -46,7 +46,7 @@ export default function AuthProvider({ children }) {
         true,
         promise.data.username,
         promise.data.accessToken,
-        promise.data.userId
+        promise.data.userID
       )
       return { type: true, message: 'Login Successfully' }
     } else {

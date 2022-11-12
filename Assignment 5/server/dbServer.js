@@ -1,16 +1,21 @@
-import { ApolloServer } from "@apollo/server";
 import { mongoose } from "mongoose";
+import express from "express";
+import cors from "cors";
+import jwt from "jsonwebtoken";
+import { nanoid } from "nanoid";
+import keys from "./config/token.secret.keys.js";
 import url from "./config/mongodb.config.js";
+import userRoutes from "./routes/userRoutes.js";
+import todoRoutes from "./routes/todoRoutes.js";
 
-import typeDefs from "./graphql/typeDefs";
-import resolvers from "./graphql/resolvers";
+const app = express();
 
-// ApolloServer
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req }) => ({ req }),
-});
+app.use(cors());
+
+app.use(express.json());
+
+app.use("/auth", userRoutes);
+app.use("/todo", todoRoutes);
 
 // Connect to MongoDB
 mongoose
@@ -20,8 +25,9 @@ mongoose
   })
   .then(() => {
     console.log("MongoDB Connected");
-    return server.listen({ port: 5000 });
   })
-  .then((res) => {
-    console.log(`Server running at ${res.url}`);
-  });
+  .catch((err) => console.log(err));
+
+app.listen(4000, () => {
+  console.log("AuthServer started on port 4000");
+});
